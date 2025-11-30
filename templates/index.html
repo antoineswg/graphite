@@ -148,8 +148,16 @@
         </div>
 
         <div class="button-group">
-            <button class="btn btn-success" id="startBtn" onclick="startBot()">Start</button>
-            <button class="btn btn-danger" id="stopBtn" onclick="stopBot()" disabled>Stop</button>
+            <button class="btn btn-success" id="startBtn" onclick="startBot()">
+                Start <span class="kbd-hint">SPACE</span>
+            </button>
+            <button class="btn btn-danger" id="stopBtn" onclick="stopBot()" disabled>
+                Stop <span class="kbd-hint">SPACE</span>
+            </button>
+        </div>
+
+        <div class="shortcuts-hint">
+            <span class="shortcut-item"><kbd>SPACE</kbd> Start/Stop</span>
         </div>
 
         <div class="console-window" id="consoleWindow">
@@ -160,7 +168,10 @@
     <div id="tokenHelpModal" class="modal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeTokenHelp()">&times;</span>
-            <h2>How to Get Your Discord Token</h2>
+            <div class="modal-header">
+                <h2>How to Get Your Discord Token</h2>
+                <span class="modal-kbd-hint"><kbd>ESC</kbd> to close</span>
+            </div>
             <div class="modal-steps">
                 <div class="step">
                     <div class="step-number">1</div>
@@ -216,7 +227,10 @@
     <div id="channelHelpModal" class="modal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeChannelHelp()">&times;</span>
-            <h2>How to Get Channel ID</h2>
+            <div class="modal-header">
+                <h2>How to Get Channel ID</h2>
+                <span class="modal-kbd-hint">Press <kbd>ESC</kbd> to close</span>
+            </div>
             <div class="modal-steps">
                 <div class="step">
                     <div class="step-number">1</div>

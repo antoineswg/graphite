@@ -46,11 +46,27 @@ window.addEventListener("click", function (event) {
   }
 });
 
-// Close modal with Escape key
+// Keyboard shortcuts
 document.addEventListener("keydown", function (event) {
+  const isInputFocused =
+    document.activeElement.tagName === "INPUT" ||
+    document.activeElement.tagName === "TEXTAREA";
+
   if (event.key === "Escape") {
     closeTokenHelp();
     closeChannelHelp();
+  }
+
+  if (event.code === "Space" && !isInputFocused) {
+    event.preventDefault();
+    const startBtn = document.getElementById("startBtn");
+    const stopBtn = document.getElementById("stopBtn");
+
+    if (!startBtn.disabled) {
+      startBot();
+    } else if (!stopBtn.disabled) {
+      stopBot();
+    }
   }
 });
 
