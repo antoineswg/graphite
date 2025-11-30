@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphite - Discord Automation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chips.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/console.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-meta">
+            made by <a href="https://a.ntoine.fr" target="_blank">antoine!</a> <br>
+            <span id="timestamp"></span>
+        </div>
+        <h1>GRAPHITE</h1>
+        <p class="subtitle">Discord Message Automation</p>
+
+        <div class="warning">
+            <strong>// NOTICE:</strong> This tool uses selfbot functionality which violates Discord's Terms of Service.
+            Account termination is possible. You've been warned, do not blame me.
+        </div>
+
+        <div id="status" class="status stopped">
+            <span id="statusText">OFFLINE</span>
+        </div>
+
+        <div class="form-group">
+            <label for="token">Discord Token</label>
+            <input type="text" id="token" placeholder="YOUR_TOKEN_HERE">
+            <p class="info-text">Personal Discord account token // Keep confidential</p>
+        </div>
+
+        <div class="form-group">
+            <label for="channelId">Channel ID</label>
+            <input type="text" id="channelId" placeholder="123456789012345678">
+            <p class="info-text">Target channel identifier for message delivery</p>
+        </div>
+
+        <div class="form-group">
+            <label>Message Pool</label>
+            <div class="times-container" id="messagesContainer">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <textarea id="newMessage" placeholder="Enter message content..." rows="3"
+                    style="resize: vertical;"></textarea>
+                <button class="btn btn-secondary" onclick="addMessage()">+ Add to pool</button>
+            </div>
+            <p class="info-text">Multiple messages available // Random selection on send</p>
+        </div>
+
+        <div class="form-group">
+            <label>Transmission Delay</label>
+            <div class="checkbox-group">
+                <input type="checkbox" id="delayEnabled">
+                <label for="delayEnabled">Enable randomized delay</label>
+            </div>
+            <div class="delay-group" id="delaySettings">
+                <div>
+                    <input type="number" id="minDelay" placeholder="0" min="0">
+                    <p class="info-text">Min seconds</p>
+                </div>
+                <div>
+                    <input type="number" id="maxDelay" placeholder="0" min="0">
+                    <p class="info-text">Max seconds</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Operation Mode</label>
+            <div class="mode-selector">
+                <button type="button" class="mode-btn active" data-mode="spam" onclick="selectMode('spam')">
+                    Spam
+                </button>
+                <button type="button" class="mode-btn" data-mode="scheduled" onclick="selectMode('scheduled')">
+                    Scheduled
+                </button>
+                <button type="button" class="mode-btn" data-mode="random_window" onclick="selectMode('random_window')">
+                    Random Window
+                </button>
+            </div>
+
+            <div class="mode-config" id="config-scheduled">
+                <label>Scheduled Send Times</label>
+                <div class="times-container" id="timesContainer">
+                </div>
+                <div class="add-time-group">
+                    <input type="time" id="newTime">
+                    <button class="btn btn-secondary" onclick="addTime()">+ Add Time</button>
+                </div>
+                <p class="info-text">24-hour format // Daily execution at specified times</p>
+            </div>
+
+            <div class="mode-config active" id="config-spam">
+                <label for="spamInterval">Message Interval</label>
+                <input type="number" id="spamInterval" placeholder="60" value="60" min="1">
+                <p class="info-text">Seconds between consecutive messages</p>
+            </div>
+
+            <div class="mode-config" id="config-random_window">
+                <label>Execution Window</label>
+                <div class="delay-group">
+                    <div>
+                        <input type="time" id="windowStart" value="09:00">
+                        <p class="info-text">Window start</p>
+                    </div>
+                    <div>
+                        <input type="time" id="windowEnd" value="17:00">
+                        <p class="info-text">Window end</p>
+                    </div>
+                </div>
+                <label for="messagesCount" style="margin-top: 15px;">Message Count</label>
+                <input type="number" id="messagesCount" placeholder="10" value="10" min="1">
+                <p class="info-text">Total messages distributed randomly within time window</p>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="btn btn-success" id="startBtn" onclick="startBot()">Start</button>
+            <button class="btn btn-danger" id="stopBtn" onclick="stopBot()" disabled>Stop</button>
+        </div>
+
+        <div class="console-window" id="consoleWindow">
+            <div class="log-entry">Graphite is ready to run. </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/state.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bot.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>
