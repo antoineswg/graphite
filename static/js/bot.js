@@ -53,9 +53,12 @@ async function updateConsole() {
 
     if (data.logs && data.logs.length > 0) {
       consoleWindow.innerHTML = data.logs
-        .map((log) => `<div class="log-entry">${escapeHtml(log)}</div>`)
+        .map((log) => {
+          const isError = /Error|Failed|error|failed/i.test(log);
+          const className = isError ? "log-entry error" : "log-entry";
+          return `<div class="${className}">${escapeHtml(log)}</div>`;
+        })
         .join("");
-      // Auto-scroll to bottom
       consoleWindow.scrollTop = consoleWindow.scrollHeight;
     }
   } catch (error) {

@@ -50,3 +50,7 @@
 .log-entry:last-child {
     color: var(--white);
 }
+
+.log-entry.error {
+    color: #ff4444;
+}
