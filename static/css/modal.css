@@ -1,0 +1,220 @@
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+    position: relative;
+    background-color: var(--black);
+    border: 2px solid var(--white);
+    margin: 5% auto;
+    padding: 40px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: slideDown 0.3s ease-out;
+    box-shadow: 0 0 40px rgba(252, 252, 252, 0.1);
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    color: var(--gray);
+    font-size: 32px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: color 0.2s;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    color: var(--white);
+}
+
+.modal-content h2 {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0 0 30px 0;
+    color: var(--white);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.modal-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.step {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.step-number {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--white);
+    background: var(--black);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.step-content {
+    flex: 1;
+    padding-top: 2px;
+}
+
+.step-content strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    color: var(--white);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.step-content p {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.6;
+    margin: 0;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.step-content code {
+    background: rgba(252, 252, 252, 0.05);
+    border: 1px solid var(--gray);
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--white);
+}
+
+.code-block {
+    display: block;
+    background: rgba(252, 252, 252, 0.05);
+    border: 1px solid var(--gray);
+    padding: 12px;
+    margin-top: 8px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--white);
+    overflow-x: auto;
+    word-break: break-all;
+    white-space: pre-wrap;
+}
+
+.modal-warning {
+    margin-top: 30px;
+    padding: 15px 20px;
+    border: 2px solid var(--white);
+    background: rgba(252, 252, 252, 0.02);
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--gray);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.modal-warning strong {
+    color: var(--white);
+    display: block;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.modal-content a {
+    color: var(--white);
+    text-decoration: underline;
+    transition: opacity 0.2s;
+}
+
+.modal-content a:hover {
+    opacity: 0.7;
+}
+
+.highlight {
+    color: var(--white);
+    font-weight: 600;
+}
+
+/* Help Button */
+.btn-help {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--gray);
+    background: var(--black);
+    color: var(--gray);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.btn-help:hover {
+    border-color: var(--white);
+    color: var(--white);
+    background: rgba(252, 252, 252, 0.05);
+}
+
+.btn-help:active {
+    transform: scale(0.95);
+}
+
+/* Scrollbar styling for modal */
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: var(--black);
+    border-left: 1px solid var(--gray);
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: var(--gray);
+    border-radius: 0;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: var(--white);
+}

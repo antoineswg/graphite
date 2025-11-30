@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chips.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/modes.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/console.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
 </head>
 
@@ -41,13 +42,19 @@
         </div>
 
         <div class="form-group">
-            <label for="token">Discord Token</label>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                <label for="token" style="margin: 0;">Discord Token</label>
+                <button class="btn-help" onclick="showTokenHelp()" type="button">?</button>
+            </div>
             <input type="text" id="token" placeholder="YOUR_TOKEN_HERE">
             <p class="info-text">Personal Discord account token // Keep confidential</p>
         </div>
 
         <div class="form-group">
-            <label for="channelId">Channel ID</label>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                <label for="channelId" style="margin: 0;">Channel ID</label>
+                <button class="btn-help" onclick="showChannelHelp()" type="button">?</button>
+            </div>
             <input type="text" id="channelId" placeholder="123456789012345678">
             <p class="info-text">Target channel identifier for message delivery</p>
         </div>
@@ -138,6 +145,101 @@
 
         <div class="console-window" id="consoleWindow">
             <div class="log-entry">Graphite is ready to run. </div>
+        </div>
+    </div>
+
+    <div id="tokenHelpModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeTokenHelp()">&times;</span>
+            <h2>How to Get Your Discord Token</h2>
+            <div class="modal-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>Open Discord in Browser</strong>
+                        <p>Go to <a href="https://discord.com/app" target="_blank">discord.com/app</a> and log in</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>Open Developer Tools</strong>
+                        <p>Press <code>Ctrl+Shift+I</code> or <code>F12</code>, then click on the <span
+                                class="highlight">Network</span> tab</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>Switch Text Channels</strong>
+                        <p>Open a different text channel than the one you already had open (to force Discord to fetch
+                            messages)</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <strong>Find the Messages Request</strong>
+                        <p>In the Network tab, look for the <code>messages?limit=50</code> request. You can filter by
+                            <span class="highlight">Fetch/XHR</span> or search for it. Click on the request when you
+                            find it.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <strong>Copy Authorization Header</strong>
+                        <p>Under the <span class="highlight">Headers</span> section, scroll to <span
+                                class="highlight">Request Headers</span>, then find <span
+                                class="highlight">Authorization</span>. The value of that header is your token.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-warning">
+                <strong>WARNING:</strong> Be extremely careful with your token. This token proves you are you to Discord
+                and gives full access to your account. Never share it with anyone. Using selfbots violates Discord's
+                Terms of Service and may result in account termination.
+            </div>
+        </div>
+    </div>
+
+    <div id="channelHelpModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeChannelHelp()">&times;</span>
+            <h2>How to Get Channel ID</h2>
+            <div class="modal-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>Enable Developer Mode</strong>
+                        <p>In Discord, go to <span class="highlight">User Settings</span> → <span
+                                class="highlight">Advanced</span> → Enable <span class="highlight">Developer Mode</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>Right-Click the Channel</strong>
+                        <p>Right-click on the channel name where you want to send messages</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>Copy Channel ID</strong>
+                        <p>Click <span class="highlight">Copy Channel ID</span> at the bottom of the menu</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <strong>Paste the ID</strong>
+                        <p>Paste the ID into the Channel ID field above. It will be a long number like
+                            <code>123456789012345678</code></p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
