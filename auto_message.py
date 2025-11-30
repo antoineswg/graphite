@@ -68,6 +68,17 @@ def get_random_message(config):
     return random.choice(config["messages"])
 
 
+def trigger_typing(token, channel_id):
+    """Trigger typing indicator in a Discord channel"""
+    url = f"https://discord.com/api/v9/channels/{channel_id}/typing"
+    headers = {"Authorization": token}
+
+    try:
+        requests.post(url, headers=headers)
+    except Exception:
+        pass
+
+
 def send_message(token, channel_id, message, session_id, dry_run=False):
     """Send a message to a Discord channel"""
     if dry_run:
@@ -118,11 +129,22 @@ def apply_delay(config, session_data, session_id):
     if config["delay_enabled"]:
         delay = random.randint(config["min_delay"], config["max_delay"])
         log(f"Adding random delay of {delay} seconds before sending...", session_id)
+
+        if not config.get("dry_run", False):
+            trigger_typing(config["token"], config["channel_id"])
+
         elapsed = 0
+        next_typing = 9
+
         while elapsed < delay and not session_data["stop_bot"]:
             sleep_time = min(0.1, delay - elapsed)
             time.sleep(sleep_time)
             elapsed += sleep_time
+
+            if not config.get("dry_run", False) and elapsed >= next_typing:
+                trigger_typing(config["token"], config["channel_id"])
+                next_typing += 9
+
         return session_data["stop_bot"]
     return False
 
