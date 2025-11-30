@@ -5,7 +5,7 @@ A Flask-based web interface for automating Discord messages with multiple operat
 ## Project Structure
 
 ```
-auto couscous/
+graphite/
 ├── auto_message_customizable.py  # Flask backend with bot logic
 ├── requirements.txt               # Python dependencies
 ├── templates/
