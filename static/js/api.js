@@ -15,6 +15,7 @@ async function loadConfig() {
       config.delay_enabled !== false;
     document.getElementById("minDelay").value = config.min_delay || "";
     document.getElementById("maxDelay").value = config.max_delay || "";
+    document.getElementById("dryRun").checked = config.dry_run || false;
 
     // Mode-specific settings
     currentMode = config.mode || "spam";
@@ -52,6 +53,7 @@ async function saveConfig() {
     delay_enabled: document.getElementById("delayEnabled").checked,
     min_delay: parseIntOrEmpty(document.getElementById("minDelay").value),
     max_delay: parseIntOrEmpty(document.getElementById("maxDelay").value),
+    dry_run: document.getElementById("dryRun").checked,
     send_times: times,
     spam_interval: parseIntOrEmpty(
       document.getElementById("spamInterval").value

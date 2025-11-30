@@ -7,12 +7,10 @@ from datetime import datetime, time as dt_time
 from flask import Flask, render_template, request, jsonify, session
 
 app = Flask(__name__)
-app.secret_key = "discord-bot-" + str(uuid.uuid4())  
+app.secret_key = "discord-bot-" + str(uuid.uuid4())
 
-sessions_data = (
-    {}
-) 
-max_logs = 500  
+sessions_data = {}
+max_logs = 500
 
 
 def get_session_data():
@@ -37,6 +35,7 @@ def get_session_data():
                 "window_start": "09:00",
                 "window_end": "17:00",
                 "messages_count": 10,
+                "dry_run": False,
             },
             "bot_running": False,
             "stop_bot": False,
@@ -69,8 +68,12 @@ def get_random_message(config):
     return random.choice(config["messages"])
 
 
-def send_message(token, channel_id, message, session_id):
+def send_message(token, channel_id, message, session_id, dry_run=False):
     """Send a message to a Discord channel"""
+    if dry_run:
+        log(f"[DRY RUN] Would send message: {message}", session_id)
+        return True
+
     url = f"https://discord.com/api/v9/channels/{channel_id}/messages"
     headers = {"Authorization": token, "Content-Type": "application/json"}
     data = {"content": message}
@@ -78,7 +81,7 @@ def send_message(token, channel_id, message, session_id):
     try:
         response = requests.post(url, headers=headers, json=data)
         if response.status_code == 200:
-            log("Message sent successfully!", session_id)
+            log(f"Sent: {message}", session_id)
             return True
         else:
             log(f"Failed to send message. Status: {response.status_code}", session_id)
@@ -166,7 +169,13 @@ def run_scheduled_mode(config, session_data, session_id):
             break
 
         message = get_random_message(config)
-        send_message(config["token"], config["channel_id"], message, session_id)
+        send_message(
+            config["token"],
+            config["channel_id"],
+            message,
+            session_id,
+            config.get("dry_run", False),
+        )
 
 
 def run_spam_mode(config, session_data, session_id):
@@ -179,7 +188,13 @@ def run_spam_mode(config, session_data, session_id):
             break
 
         message = get_random_message(config)
-        send_message(config["token"], config["channel_id"], message, session_id)
+        send_message(
+            config["token"],
+            config["channel_id"],
+            message,
+            session_id,
+            config.get("dry_run", False),
+        )
 
         elapsed = 0
         interval = config["spam_interval"]
@@ -268,7 +283,13 @@ def run_random_window_mode(config, session_data, session_id):
             break
 
         message = get_random_message(config)
-        send_message(config["token"], config["channel_id"], message, session_id)
+        send_message(
+            config["token"],
+            config["channel_id"],
+            message,
+            session_id,
+            config.get("dry_run", False),
+        )
 
     log("All messages sent for this window. Stopping bot.", session_id)
 
@@ -300,6 +321,8 @@ def run_bot(session_id):
         log(f"Delay: {config['min_delay']}-{config['max_delay']} seconds", session_id)
     else:
         log(f"Delay: Disabled", session_id)
+    if config.get("dry_run", False):
+        log(f"DRY RUN MODE: Messages will NOT be sent to Discord", session_id)
     log("=" * 50, session_id)
 
     try:
@@ -342,6 +365,7 @@ def get_config():
             "window_start": config["window_start"],
             "window_end": config["window_end"],
             "messages_count": config["messages_count"],
+            "dry_run": config.get("dry_run", False),
             "bot_running": session_data["bot_running"],
         }
     )
@@ -403,6 +427,8 @@ def update_config():
         if messages_count_val != "" and messages_count_val is not None
         else 10
     )
+
+    config["dry_run"] = data.get("dry_run", config.get("dry_run", False))
 
     log("Configuration updated successfully", session_id)
     return jsonify({"success": True, "message": "Configuration updated"})
@@ -478,6 +504,7 @@ def get_logs():
     """Get console logs"""
     session_data = get_session_data()
     return jsonify({"logs": session_data["console_logs"]})
+
 
 if __name__ == "__main__":
     print("Starting Discord Auto Message Bot Web Interface...")

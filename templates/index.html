@@ -90,6 +90,15 @@
         </div>
 
         <div class="form-group">
+            <label>Execution Settings</label>
+            <div class="checkbox-group">
+                <input type="checkbox" id="dryRun">
+                <label for="dryRun">Dry run mode (preview only, don't send)</label>
+            </div>
+            <p class="info-text">Enable to test without sending actual messages to Discord</p>
+        </div>
+
+        <div class="form-group">
             <label>Operation Mode</label>
             <div class="mode-selector">
                 <button type="button" class="mode-btn active" data-mode="spam" onclick="selectMode('spam')">
@@ -182,7 +191,8 @@
                         <strong>Find the Messages Request</strong>
                         <p>In the Network tab, look for the <code>messages?limit=50</code> request. You can filter by
                             <span class="highlight">Fetch/XHR</span> or search for it. Click on the request when you
-                            find it.</p>
+                            find it.
+                        </p>
                     </div>
                 </div>
                 <div class="step">
@@ -236,7 +246,8 @@
                     <div class="step-content">
                         <strong>Paste the ID</strong>
                         <p>Paste the ID into the Channel ID field above. It will be a long number like
-                            <code>123456789012345678</code></p>
+                            <code>123456789012345678</code>
+                        </p>
                     </div>
                 </div>
             </div>
