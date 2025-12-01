@@ -62,7 +62,7 @@ body::before {
     position: absolute;
     top: 15px;
     right: 20px;
-    font-size: 9px;
+    font-size: var(--font-sm);
     color: var(--gray);
     letter-spacing: 1px;
     text-align: right;
@@ -79,7 +79,7 @@ h1 {
     font-family: 'Space Mono', monospace;
     color: var(--white);
     margin-bottom: 5px;
-    font-size: clamp(24px, 5vw, 42px);
+    font-size: clamp(1.5rem, 5vw, 2.625rem);
     letter-spacing: -2px;
     font-weight: 700;
     text-transform: uppercase;
@@ -90,7 +90,7 @@ h1 {
 .subtitle {
     color: var(--gray);
     margin-bottom: 40px;
-    font-size: clamp(11px, 2vw, 13px);
+    font-size: clamp(0.6875rem, 2vw, 0.8125rem);
     letter-spacing: 2px;
     text-transform: uppercase;
     animation: fadeInUp 0.6s ease-out 0.2s both;
@@ -102,7 +102,7 @@ h1 {
     border-left: 3px solid var(--white);
     padding: 16px;
     margin-bottom: 30px;
-    font-size: 11px;
+    font-size: var(--font-base);
     color: var(--gray);
     line-height: 1.6;
     animation: fadeInUp 0.6s ease-out 0.2s both;
@@ -112,11 +112,38 @@ h1 {
     color: var(--white);
 }
 
+.shortcuts-hint {
+    padding: 8px 12px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: var(--font-md);
+    color: var(--gray);
+    opacity: 0.6;
+    animation: fadeInUp 0.6s ease-out 0.24s both;
+}
+
+.shortcuts-hint .shortcut-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.shortcuts-hint kbd {
+    background: transparent;
+    border: 1px solid var(--gray);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: var(--font-sm);
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--white);
+    opacity: 0.8;
+}
+
 .status {
     padding: 12px 20px;
     margin-bottom: 30px;
     font-weight: 500;
-    font-size: 11px;
+    font-size: var(--font-base);
     letter-spacing: 1.5px;
     text-transform: uppercase;
     border: 1px solid var(--gray);

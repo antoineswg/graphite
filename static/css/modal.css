@@ -42,7 +42,7 @@
     right: 20px;
     top: 20px;
     color: var(--gray);
-    font-size: 32px;
+    font-size: var(--font-6xl);
     font-weight: 300;
     cursor: pointer;
     transition: color 0.2s;
@@ -62,7 +62,7 @@
 }
 
 .modal-content h2 {
-    font-size: 24px;
+    font-size: var(--font-4xl);
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -72,7 +72,7 @@
 }
 
 .modal-kbd-hint {
-    font-size: 10px;
+    font-size: var(--font-md);
     color: var(--gray);
     letter-spacing: 0.5px;
     white-space: nowrap;
@@ -86,7 +86,7 @@
     border: 1px solid var(--gray);
     padding: 2px 8px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
+    font-size: var(--font-sm);
     color: var(--white);
     letter-spacing: 1px;
 }
@@ -114,7 +114,7 @@
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 18px;
+    font-size: var(--font-3xl);
     font-family: 'JetBrains Mono', monospace;
 }
 
@@ -125,7 +125,7 @@
 
 .step-content strong {
     display: block;
-    font-size: 13px;
+    font-size: var(--font-xl);
     font-weight: 600;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -135,7 +135,7 @@
 }
 
 .step-content p {
-    font-size: 13px;
+    font-size: var(--font-xl);
     color: var(--gray);
     line-height: 1.6;
     margin: 0;
@@ -148,7 +148,7 @@
     padding: 2px 8px;
     border-radius: 3px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
+    font-size: var(--font-lg);
     color: var(--white);
 }
 
@@ -160,7 +160,7 @@
     margin-top: 8px;
     border-radius: 3px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: var(--font-base);
     color: var(--white);
     overflow-x: auto;
     word-break: break-all;
@@ -172,7 +172,7 @@
     padding: 15px 20px;
     border: 2px solid var(--white);
     background: rgba(252, 252, 252, 0.02);
-    font-size: 11px;
+    font-size: var(--font-base);
     line-height: 1.6;
     color: var(--gray);
     font-family: 'JetBrains Mono', monospace;
@@ -207,7 +207,7 @@
     border: 2px solid var(--gray);
     background: var(--black);
     color: var(--gray);
-    font-size: 14px;
+    font-size: var(--font-2xl);
     font-weight: 700;
     cursor: pointer;
     font-family: 'JetBrains Mono', monospace;
@@ -245,4 +245,56 @@
 
 .modal-content::-webkit-scrollbar-thumb:hover {
     background: var(--white);
+}
+
+.shortcuts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.shortcuts-section h3 {
+    font-size: var(--font-xl);
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 0 0 15px 0;
+    color: var(--white);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.shortcut-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    font-size: var(--font-lg);
+    color: var(--gray);
+}
+
+.shortcut-row kbd {
+    min-width: 80px;
+    text-align: center;
+}
+
+.shortcut-row span {
+    flex: 1;
+}
+
+.modal-note {
+    margin-top: 30px;
+    padding: 12px 16px;
+    border: 1px solid var(--gray);
+    background: rgba(252, 252, 252, 0.02);
+    font-size: var(--font-base);
+    color: var(--gray);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.modal-note strong {
+    color: var(--white);
+}
+
+.modal-note kbd {
+    margin: 0 4px;
 }

@@ -46,26 +46,161 @@ window.addEventListener("click", function (event) {
   }
 });
 
+// Shortcuts Help Modal Functions
+function showShortcutsHelp() {
+  document.getElementById("shortcutsHelpModal").style.display = "block";
+  document.body.style.overflow = "hidden";
+}
+
+function closeShortcutsHelp() {
+  document.getElementById("shortcutsHelpModal").style.display = "none";
+  document.body.style.overflow = "auto";
+}
+
+function clearConsole() {
+  const consoleWindow = document.getElementById("consoleWindow");
+  consoleWindow.innerHTML = '<div class="log-entry">Console cleared.</div>';
+}
+
+const modes = ["spam", "scheduled", "random_window"];
+let currentModeIndex = 0;
+
+function cycleModes() {
+  currentModeIndex = (currentModeIndex + 1) % modes.length;
+  selectMode(modes[currentModeIndex]);
+}
+
 // Keyboard shortcuts
 document.addEventListener("keydown", function (event) {
   const isInputFocused =
     document.activeElement.tagName === "INPUT" ||
     document.activeElement.tagName === "TEXTAREA";
+  const isMessageTextarea = document.activeElement.id === "newMessage";
 
   if (event.key === "Escape") {
     closeTokenHelp();
     closeChannelHelp();
+    closeShortcutsHelp();
+    return;
   }
 
-  if (event.code === "Space" && !isInputFocused) {
+  if ((event.ctrlKey || event.metaKey) && event.key === "k") {
     event.preventDefault();
-    const startBtn = document.getElementById("startBtn");
-    const stopBtn = document.getElementById("stopBtn");
+    document.getElementById("token").focus();
+    return;
+  }
 
-    if (!startBtn.disabled) {
-      startBot();
-    } else if (!stopBtn.disabled) {
-      stopBot();
+  if ((event.ctrlKey || event.metaKey) && event.key === "l") {
+    event.preventDefault();
+    document.getElementById("channelId").focus();
+    return;
+  }
+
+  if ((event.ctrlKey || event.metaKey) && event.key === "m") {
+    event.preventDefault();
+    document.getElementById("newMessage").focus();
+    return;
+  }
+
+  if (
+    (event.ctrlKey || event.metaKey) &&
+    event.key === "Enter" &&
+    isMessageTextarea
+  ) {
+    event.preventDefault();
+    addMessage();
+    return;
+  }
+
+  if ((event.ctrlKey || event.metaKey) && event.key === "s") {
+    event.preventDefault();
+    saveConfig();
+    return;
+  }
+
+  if ((event.ctrlKey || event.metaKey) && event.key === "d") {
+    event.preventDefault();
+    const dryRunCheckbox = document.getElementById("dryRun");
+    dryRunCheckbox.checked = !dryRunCheckbox.checked;
+    return;
+  }
+
+  if ((event.ctrlKey || event.metaKey) && event.key === "r") {
+    event.preventDefault();
+    clearConsole();
+    return;
+  }
+
+  if (!isInputFocused) {
+    if (event.key === "1") {
+      event.preventDefault();
+      selectMode("spam");
+      return;
+    }
+
+    if (event.key === "2") {
+      event.preventDefault();
+      selectMode("scheduled");
+      return;
+    }
+
+    if (event.key === "3") {
+      event.preventDefault();
+      selectMode("random_window");
+      return;
+    }
+
+    if (event.key.toLowerCase() === "m") {
+      event.preventDefault();
+      cycleModes();
+      return;
+    }
+
+    if (event.key.toLowerCase() === "d") {
+      event.preventDefault();
+      const delayCheckbox = document.getElementById("delayEnabled");
+      delayCheckbox.checked = !delayCheckbox.checked;
+      updateDelayVisibility();
+      return;
+    }
+
+    if (event.key.toLowerCase() === "y") {
+      event.preventDefault();
+      const dryRunCheckbox = document.getElementById("dryRun");
+      dryRunCheckbox.checked = !dryRunCheckbox.checked;
+      return;
+    }
+
+    if (event.key.toLowerCase() === "h" || event.key === "?") {
+      event.preventDefault();
+      showShortcutsHelp();
+      return;
+    }
+
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      const consoleWindow = document.getElementById("consoleWindow");
+      consoleWindow.scrollTop -= 40;
+      return;
+    }
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      const consoleWindow = document.getElementById("consoleWindow");
+      consoleWindow.scrollTop += 40;
+      return;
+    }
+
+    if (event.code === "Space") {
+      event.preventDefault();
+      const startBtn = document.getElementById("startBtn");
+      const stopBtn = document.getElementById("stopBtn");
+
+      if (!startBtn.disabled) {
+        startBot();
+      } else if (!stopBtn.disabled) {
+        stopBot();
+      }
     }
   }
 });

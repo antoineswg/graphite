@@ -3,7 +3,7 @@
     border: 2px solid var(--white);
     background: var(--black);
     color: var(--white);
-    font-size: 11px;
+    font-size: var(--font-base);
     font-weight: 500;
     letter-spacing: 1.5px;
     text-transform: uppercase;
@@ -65,7 +65,7 @@
 }
 
 .kbd-hint {
-    font-size: 8px;
+    font-size: var(--font-xs);
     opacity: 0.5;
     margin-left: 8px;
     font-weight: 400;
@@ -80,7 +80,7 @@
     display: flex;
     gap: 20px;
     margin-top: 15px;
-    font-size: 10px;
+    font-size: var(--font-md);
     color: var(--gray);
     letter-spacing: 0.5px;
     animation: fadeInUp 0.6s ease-out 0.65s both;
@@ -97,7 +97,30 @@ kbd {
     border: 1px solid var(--gray);
     padding: 2px 8px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
+    font-size: var(--font-sm);
     color: var(--white);
     letter-spacing: 1px;
+}
+
+.btn-shortcuts {
+    background: var(--black);
+    border: 1px solid var(--gray);
+    color: var(--gray);
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: var(--font-2xl);
+    font-weight: 700;
+    transition: all 0.2s;
+    padding: 0;
+}
+
+.btn-shortcuts:hover {
+    border-color: var(--white);
+    color: var(--white);
+    background: rgba(252, 252, 252, 0.05);
 }

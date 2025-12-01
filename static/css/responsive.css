@@ -9,12 +9,12 @@
     }
 
     h1 {
-        font-size: 28px;
+        font-size: var(--font-5xl);
         letter-spacing: -1px;
     }
 
     .subtitle {
-        font-size: 10px;
+        font-size: var(--font-md);
         margin-bottom: 30px;
     }
 
@@ -38,7 +38,7 @@
     .console-window {
         height: 250px;
         padding: 15px;
-        font-size: 10px;
+        font-size: var(--font-md);
     }
 
     .form-group {
@@ -52,11 +52,11 @@
     }
 
     h1 {
-        font-size: 24px;
+        font-size: var(--font-4xl);
     }
 
     .subtitle {
-        font-size: 9px;
+        font-size: var(--font-sm);
     }
 
     input[type="text"],
@@ -64,7 +64,7 @@
     input[type="time"],
     textarea {
         padding: 10px 12px;
-        font-size: 13px;
+        font-size: var(--font-xl);
     }
 
     .console-window {
