@@ -49,12 +49,12 @@ async function switchConfig() {
       activeConfigId = configId;
       await loadConfig();
     } else {
-      alert(data.message);
+      showNotification(`Error: ${data.message}`);
       select.value = activeConfigId;
     }
   } catch (error) {
     console.error("Failed to switch config:", error);
-    alert("Failed to switch config");
+    showNotification("Error: Failed to switch config");
     select.value = activeConfigId;
   }
 }
@@ -126,11 +126,11 @@ async function switchToConfig(configId) {
       renderConfigsList();
       closeConfigManager();
     } else {
-      alert(data.message);
+      showNotification(`Error: ${data.message}`);
     }
   } catch (error) {
     console.error("Failed to switch config:", error);
-    alert("Failed to switch config");
+    showNotification("Error: Failed to switch config");
   }
 }
 
@@ -166,7 +166,7 @@ async function addNewConfig() {
     }
   } catch (error) {
     console.error("Failed to create config:", error);
-    alert("Failed to create config");
+    showNotification("Error: Failed to create config");
   }
 }
 
@@ -214,7 +214,7 @@ async function saveRenameConfig(configId) {
   const newName = input.value.trim();
 
   if (!newName) {
-    alert("Config name cannot be empty");
+    showNotification("Error: Config name cannot be empty");
     input.focus();
     return;
   }
@@ -239,18 +239,15 @@ async function saveRenameConfig(configId) {
     }
   } catch (error) {
     console.error("Failed to rename config:", error);
-    alert("Failed to rename config");
+    showNotification("Error: Failed to rename config");
   }
 }
 
 async function deleteConfig(configId) {
-  if (
-    !confirm(
-      "Are you sure you want to delete this config? This cannot be undone."
-    )
-  ) {
-    return;
-  }
+  const config = configs.find((c) => c.id === configId);
+  if (!config) return;
+
+  const configBackup = JSON.parse(JSON.stringify(config));
 
   try {
     const response = await fetch(`/api/accounts/${configId}`, {
@@ -261,11 +258,32 @@ async function deleteConfig(configId) {
     if (data.success) {
       await loadConfigs();
       renderConfigsList();
+
+      showToast(`Config deleted: ${config.name}`, async () => {
+        try {
+          const restoreResponse = await fetch("/api/accounts", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: configBackup.name,
+              config: configBackup.config,
+            }),
+          });
+          const restoreData = await restoreResponse.json();
+
+          if (restoreData.success) {
+            await loadConfigs();
+            renderConfigsList();
+          }
+        } catch (error) {
+          console.error("Failed to restore config:", error);
+        }
+      });
     } else {
-      alert(data.message);
+      showNotification(`Error: ${data.message}`);
     }
   } catch (error) {
     console.error("Failed to delete config:", error);
-    alert("Failed to delete config");
+    showNotification("Error: Failed to delete config");
   }
 }

@@ -27,9 +27,17 @@ function addTime() {
 }
 
 function removeTime(index) {
+  const removedTime = times[index];
   times.splice(index, 1);
   updateTimesDisplay();
   autoSaveConfig();
+
+  showToast(`Time removed: ${removedTime}`, () => {
+    times.splice(index, 0, removedTime);
+    times.sort();
+    updateTimesDisplay();
+    autoSaveConfig();
+  });
 }
 
 function updateMessagesDisplay() {
@@ -76,9 +84,21 @@ function addMessage() {
 }
 
 function removeMessage(index) {
+  const removedMessage = messages[index];
   messages.splice(index, 1);
   updateMessagesDisplay();
   autoSaveConfig();
+
+  const displayText =
+    removedMessage.length > 30
+      ? removedMessage.substring(0, 30) + "..."
+      : removedMessage;
+
+  showToast(`Message removed: "${displayText}"`, () => {
+    messages.splice(index, 0, removedMessage);
+    updateMessagesDisplay();
+    autoSaveConfig();
+  });
 }
 
 function selectMode(mode) {

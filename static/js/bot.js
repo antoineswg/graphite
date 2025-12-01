@@ -60,10 +60,10 @@ async function updateConsole() {
         })
         .join("");
       consoleWindow.scrollTop = consoleWindow.scrollHeight;
-      
+
       // Save logs to localStorage
       saveLogsToStorage(data.logs);
-      
+
       // Update log buttons state
       updateLogButtonsState();
     }
@@ -74,16 +74,16 @@ async function updateConsole() {
 
 function saveLogsToStorage(logs) {
   try {
-    localStorage.setItem('graphite_logs', JSON.stringify(logs));
-    localStorage.setItem('graphite_logs_timestamp', new Date().toISOString());
+    localStorage.setItem("graphite_logs", JSON.stringify(logs));
+    localStorage.setItem("graphite_logs_timestamp", new Date().toISOString());
   } catch (error) {
-    console.error('Failed to save logs to localStorage:', error);
+    console.error("Failed to save logs to localStorage:", error);
   }
 }
 
 function loadLogsFromStorage() {
   try {
-    const savedLogs = localStorage.getItem('graphite_logs');
+    const savedLogs = localStorage.getItem("graphite_logs");
     if (savedLogs) {
       const logs = JSON.parse(savedLogs);
       const consoleWindow = document.getElementById("consoleWindow");
@@ -98,64 +98,64 @@ function loadLogsFromStorage() {
     }
     updateLogButtonsState();
   } catch (error) {
-    console.error('Failed to load logs from localStorage:', error);
+    console.error("Failed to load logs from localStorage:", error);
   }
 }
 
 function exportLogsToFile() {
   try {
-    const savedLogs = localStorage.getItem('graphite_logs');
+    const savedLogs = localStorage.getItem("graphite_logs");
     if (!savedLogs) {
       return;
     }
-    
+
     const logs = JSON.parse(savedLogs);
-    const logsText = logs.join('\n');
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const logsText = logs.join("\n");
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     const filename = `graphite-logs-${timestamp}.txt`;
-    
-    const blob = new Blob([logsText], { type: 'text/plain' });
+
+    const blob = new Blob([logsText], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
     a.download = filename;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    
-    showNotification('Logs exported successfully');
+
+    showNotification("Logs exported successfully");
   } catch (error) {
-    console.error('Failed to export logs:', error);
-    showNotification('Error: Failed to export logs');
+    console.error("Failed to export logs:", error);
+    showNotification("Error: Failed to export logs");
   }
 }
 
 async function copyLogsToClipboard() {
   try {
-    const savedLogs = localStorage.getItem('graphite_logs');
+    const savedLogs = localStorage.getItem("graphite_logs");
     if (!savedLogs) {
       return;
     }
-    
+
     const logs = JSON.parse(savedLogs);
-    const logsText = logs.join('\n');
-    
+    const logsText = logs.join("\n");
+
     await navigator.clipboard.writeText(logsText);
-    showNotification('Logs copied to clipboard');
+    showNotification("Logs copied to clipboard");
   } catch (error) {
-    console.error('Failed to copy logs:', error);
-    showNotification('Error: Failed to copy logs to clipboard');
+    console.error("Failed to copy logs:", error);
+    showNotification("Error: Failed to copy logs to clipboard");
   }
 }
 
 function updateLogButtonsState() {
-  const savedLogs = localStorage.getItem('graphite_logs');
+  const savedLogs = localStorage.getItem("graphite_logs");
   const hasLogs = savedLogs && JSON.parse(savedLogs).length > 1;
-  
-  const copyBtn = document.getElementById('copyLogsBtn');
-  const exportBtn = document.getElementById('exportLogsBtn');
-  
+
+  const copyBtn = document.getElementById("copyLogsBtn");
+  const exportBtn = document.getElementById("exportLogsBtn");
+
   if (copyBtn) copyBtn.disabled = !hasLogs;
   if (exportBtn) exportBtn.disabled = !hasLogs;
 }

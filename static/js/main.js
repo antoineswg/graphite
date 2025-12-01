@@ -86,8 +86,8 @@ function closeShortcutsHelp() {
 function clearConsole() {
   const consoleWindow = document.getElementById("consoleWindow");
   consoleWindow.innerHTML = '<div class="log-entry">Console cleared.</div>';
-  localStorage.removeItem('graphite_logs');
-  localStorage.removeItem('graphite_logs_timestamp');
+  localStorage.removeItem("graphite_logs");
+  localStorage.removeItem("graphite_logs_timestamp");
   updateLogButtonsState();
 }
 

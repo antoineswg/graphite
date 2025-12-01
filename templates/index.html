@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/console.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/configs.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toast.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
 </head>
 
@@ -191,7 +192,8 @@
         </div>
 
         <div class="button-group" style="margin-top: 15px;">
-            <button id="copyLogsBtn" class="btn btn-secondary" onclick="copyLogsToClipboard()" style="flex: 1;" disabled>
+            <button id="copyLogsBtn" class="btn btn-secondary" onclick="copyLogsToClipboard()" style="flex: 1;"
+                disabled>
                 Copy Logs
             </button>
             <button id="exportLogsBtn" class="btn btn-secondary" onclick="exportLogsToFile()" style="flex: 1;" disabled>
@@ -204,6 +206,8 @@
                 it</a>
         </div>
     </div>
+
+    <div class="toast-container" id="toastContainer"></div>
 
     <div id="tokenHelpModal" class="modal" onclick="if(event.target === this) closeTokenHelp()">
         <div class="modal-content">
@@ -440,6 +444,7 @@
     </div>
 
     <script src="{{ url_for('static', filename='js/state.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/toast.js') }}"></script>
     <script src="{{ url_for('static', filename='js/configs.js') }}"></script>
     <script src="{{ url_for('static', filename='js/api.js') }}"></script>
     <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
