@@ -22,12 +22,14 @@ function addTime() {
     times.sort();
     updateTimesDisplay();
     input.value = "";
+    autoSaveConfig();
   }
 }
 
 function removeTime(index) {
   times.splice(index, 1);
   updateTimesDisplay();
+  autoSaveConfig();
 }
 
 function updateMessagesDisplay() {
@@ -69,15 +71,18 @@ function addMessage() {
     messages.push(trimmedMessage);
     updateMessagesDisplay();
     input.value = "";
+    autoSaveConfig();
   }
 }
 
 function removeMessage(index) {
   messages.splice(index, 1);
   updateMessagesDisplay();
+  autoSaveConfig();
 }
 
 function selectMode(mode) {
+  const previousMode = currentMode;
   currentMode = mode;
 
   // Update button states
@@ -94,6 +99,11 @@ function selectMode(mode) {
     panel.classList.remove("active");
   });
   document.getElementById("config-" + mode).classList.add("active");
+
+  // Auto-save only if mode actually changed (not initial load)
+  if (previousMode !== mode && previousMode !== undefined) {
+    autoSaveConfig();
+  }
 }
 
 function updateDelayVisibility() {

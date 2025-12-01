@@ -27,8 +27,13 @@ document.addEventListener("DOMContentLoaded", function () {
   updateTimestamp();
   setInterval(updateTimestamp, 1000);
 
-  // Load initial configuration
-  loadConfig();
+  // Load configs and initial configuration
+  loadConfigs().then(() => {
+    loadConfig();
+  });
+
+  // Set up auto-save listeners
+  setupAutoSave();
 });
 
 // Poll status and logs every 2 seconds
@@ -99,6 +104,7 @@ document.addEventListener("keydown", function (event) {
     closeTokenHelp();
     closeChannelHelp();
     closeShortcutsHelp();
+    closeConfigManager();
     return;
   }
 
@@ -127,12 +133,6 @@ document.addEventListener("keydown", function (event) {
   ) {
     event.preventDefault();
     addMessage();
-    return;
-  }
-
-  if ((event.ctrlKey || event.metaKey) && event.key === "s") {
-    event.preventDefault();
-    saveConfig();
     return;
   }
 

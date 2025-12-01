@@ -73,8 +73,84 @@ async function saveConfig() {
     });
 
     const result = await response.json();
-    // Configuration saved, no alert needed
+
+    if (result.success) {
+      // Reload configs to update the config info in the manager
+      await loadConfigs();
+      showSaveNotification();
+    } else {
+      showSaveError(result.message || "Failed to save configuration");
+    }
   } catch (error) {
     console.error("Failed to save configuration:", error);
+    showSaveError("Network error occurred");
   }
+}
+
+function showSaveNotification() {
+  const consoleWindow = document.getElementById("consoleWindow");
+  const timestamp = new Date().toLocaleTimeString();
+  const logEntry = document.createElement("div");
+  logEntry.className = "log-entry";
+  const activeConfig = configs.find((c) => c.id === activeConfigId);
+  const configName = activeConfig ? activeConfig.name : "current config";
+  logEntry.textContent = `[${timestamp}] Configuration saved for ${configName}`;
+  consoleWindow.appendChild(logEntry);
+  consoleWindow.scrollTop = consoleWindow.scrollHeight;
+}
+
+function showSaveError(message) {
+  const consoleWindow = document.getElementById("consoleWindow");
+  const timestamp = new Date().toLocaleTimeString();
+  const logEntry = document.createElement("div");
+  logEntry.className = "log-entry error";
+  logEntry.textContent = `[${timestamp}] Save failed: ${message}`;
+  consoleWindow.appendChild(logEntry);
+  consoleWindow.scrollTop = consoleWindow.scrollHeight;
+}
+
+// Auto-save functionality with debouncing
+let autoSaveTimeout = null;
+
+function autoSaveConfig() {
+  // Clear any existing timeout
+  if (autoSaveTimeout) {
+    clearTimeout(autoSaveTimeout);
+  }
+
+  // Set a new timeout to save after 1 second of inactivity
+  autoSaveTimeout = setTimeout(() => {
+    saveConfig();
+  }, 1000);
+}
+
+function setupAutoSave() {
+  // Listen to all form inputs
+  const inputFields = [
+    "token",
+    "channelId",
+    "minDelay",
+    "maxDelay",
+    "spamInterval",
+    "windowStart",
+    "windowEnd",
+    "messagesCount",
+  ];
+
+  inputFields.forEach((id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.addEventListener("input", autoSaveConfig);
+      element.addEventListener("change", autoSaveConfig);
+    }
+  });
+
+  // Listen to checkboxes
+  const checkboxFields = ["delayEnabled", "dryRun"];
+  checkboxFields.forEach((id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.addEventListener("change", autoSaveConfig);
+    }
+  });
 }

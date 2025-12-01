@@ -13,6 +13,25 @@ sessions_data = {}
 max_logs = 500
 
 
+def get_default_config():
+    """Get default configuration object"""
+    return {
+        "token": "",
+        "channel_id": "",
+        "messages": [],
+        "mode": "spam",
+        "delay_enabled": False,
+        "min_delay": 0,
+        "max_delay": 0,
+        "send_times": [],
+        "spam_interval": 60,
+        "window_start": "09:00",
+        "window_end": "17:00",
+        "messages_count": 10,
+        "dry_run": False,
+    }
+
+
 def get_session_data():
     """Get or create session data for current session"""
     if "session_id" not in session:
@@ -22,28 +41,33 @@ def get_session_data():
 
     if session_id not in sessions_data:
         sessions_data[session_id] = {
-            "config": {
-                "token": "",
-                "channel_id": "",
-                "messages": [],
-                "mode": "spam",
-                "delay_enabled": False,
-                "min_delay": 0,
-                "max_delay": 0,
-                "send_times": [],
-                "spam_interval": 60,
-                "window_start": "09:00",
-                "window_end": "17:00",
-                "messages_count": 10,
-                "dry_run": False,
-            },
+            "accounts": [
+                {
+                    "id": str(uuid.uuid4()),
+                    "name": "Config 1",
+                    "config": get_default_config(),
+                }
+            ],
+            "active_account_id": None,
             "bot_running": False,
             "stop_bot": False,
             "bot_thread": None,
             "console_logs": [],
         }
+        sessions_data[session_id]["active_account_id"] = sessions_data[session_id][
+            "accounts"
+        ][0]["id"]
 
     return sessions_data[session_id]
+
+
+def get_active_account(session_data):
+    """Get the currently active account"""
+    active_id = session_data.get("active_account_id")
+    for account in session_data["accounts"]:
+        if account["id"] == active_id:
+            return account
+    return session_data["accounts"][0] if session_data["accounts"] else None
 
 
 def log(message, session_id):
@@ -372,7 +396,8 @@ def index():
 def get_config():
     """Get current configuration"""
     session_data = get_session_data()
-    config = session_data["config"]
+    active_account = get_active_account(session_data)
+    config = active_account["config"] if active_account else get_default_config()
     return jsonify(
         {
             "token": config["token"],
@@ -398,7 +423,10 @@ def update_config():
     """Update configuration"""
     session_data = get_session_data()
     session_id = session["session_id"]
-    config = session_data["config"]
+    active_account = get_active_account(session_data)
+    if not active_account:
+        return jsonify({"success": False, "message": "No active account"}), 400
+    config = active_account["config"]
 
     try:
         data = request.json
@@ -461,7 +489,10 @@ def start_bot():
     """Start the bot"""
     session_data = get_session_data()
     session_id = session["session_id"]
-    config = session_data["config"]
+    active_account = get_active_account(session_data)
+    if not active_account:
+        return jsonify({"success": False, "message": "No active account"}), 400
+    config = active_account["config"]
 
     if session_data["bot_running"]:
         return jsonify({"success": False, "message": "Bot is already running"})
@@ -526,6 +557,92 @@ def get_logs():
     """Get console logs"""
     session_data = get_session_data()
     return jsonify({"logs": session_data["console_logs"]})
+
+
+@app.route("/api/accounts", methods=["GET"])
+def get_accounts():
+    """Get all accounts"""
+    session_data = get_session_data()
+    return jsonify(
+        {
+            "accounts": session_data["accounts"],
+            "active_account_id": session_data["active_account_id"],
+        }
+    )
+
+
+@app.route("/api/accounts", methods=["POST"])
+def create_account():
+    """Create a new account"""
+    session_data = get_session_data()
+    data = request.json
+
+    new_account = {
+        "id": str(uuid.uuid4()),
+        "name": data.get("name", f"Account {len(session_data['accounts']) + 1}"),
+        "config": get_default_config(),
+    }
+
+    session_data["accounts"].append(new_account)
+    return jsonify({"success": True, "account": new_account})
+
+
+@app.route("/api/accounts/<account_id>", methods=["PUT"])
+def update_account(account_id):
+    """Update account name"""
+    session_data = get_session_data()
+    data = request.json
+
+    for account in session_data["accounts"]:
+        if account["id"] == account_id:
+            account["name"] = data.get("name", account["name"])
+            return jsonify({"success": True, "account": account})
+
+    return jsonify({"success": False, "message": "Account not found"}), 404
+
+
+@app.route("/api/accounts/<account_id>", methods=["DELETE"])
+def delete_account(account_id):
+    """Delete an account"""
+    session_data = get_session_data()
+
+    if len(session_data["accounts"]) <= 1:
+        return (
+            jsonify({"success": False, "message": "Cannot delete the last account"}),
+            400,
+        )
+
+    for i, account in enumerate(session_data["accounts"]):
+        if account["id"] == account_id:
+            if session_data["active_account_id"] == account_id:
+                session_data["active_account_id"] = session_data["accounts"][
+                    0 if i == 0 else i - 1
+                ]["id"]
+            session_data["accounts"].pop(i)
+            return jsonify({"success": True})
+
+    return jsonify({"success": False, "message": "Account not found"}), 404
+
+
+@app.route("/api/accounts/<account_id>/activate", methods=["POST"])
+def activate_account(account_id):
+    """Set active account"""
+    session_data = get_session_data()
+
+    if session_data["bot_running"]:
+        return (
+            jsonify(
+                {"success": False, "message": "Stop the bot before switching accounts"}
+            ),
+            400,
+        )
+
+    for account in session_data["accounts"]:
+        if account["id"] == account_id:
+            session_data["active_account_id"] = account_id
+            return jsonify({"success": True, "account": account})
+
+    return jsonify({"success": False, "message": "Account not found"}), 404
 
 
 if __name__ == "__main__":

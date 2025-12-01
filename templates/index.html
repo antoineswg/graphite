@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/modes.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/console.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/configs.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
 </head>
 
@@ -46,6 +47,15 @@
 
         <div id="status" class="status stopped">
             <span id="statusText">OFFLINE</span>
+        </div>
+
+        <div class="form-group">
+            <label>Config Management</label>
+            <div class="config-selector">
+                <select id="configSelect" onchange="switchConfig()"></select>
+                <button class="btn btn-secondary" onclick="showConfigManager()">Manage</button>
+            </div>
+            <p class="info-text">Switch between multiple Discord configurations</p>
         </div>
 
         <div class="form-group">
@@ -326,10 +336,6 @@
                         <span>Add message to pool</span>
                     </div>
                     <div class="shortcut-row">
-                        <kbd>Ctrl+S</kbd>
-                        <span>Save configuration</span>
-                    </div>
-                    <div class="shortcut-row">
                         <kbd>Ctrl+R</kbd>
                         <span>Clear console</span>
                     </div>
@@ -389,10 +395,24 @@
         </div>
     </div>
 
+    <div id="configManagerModal" class="modal" onclick="if(event.target === this) closeConfigManager()">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeConfigManager()">&times;</span>
+            <div class="modal-header">
+                <h2>Config Manager</h2>
+                <span class="modal-kbd-hint">Press <kbd>ESC</kbd> to close</span>
+            </div>
+            <div id="configsList"></div>
+            <button class="btn btn-secondary" onclick="addNewConfig()" style="margin-top: 20px; width: 100%;">+ Add New
+                Config</button>
+        </div>
+    </div>
+
     <script src="{{ url_for('static', filename='js/state.js') }}"></script>
     <script src="{{ url_for('static', filename='js/api.js') }}"></script>
     <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bot.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/configs.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 
