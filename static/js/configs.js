@@ -287,3 +287,73 @@ async function deleteConfig(configId) {
     showNotification("Error: Failed to delete config");
   }
 }
+
+function exportConfigAsJSON() {
+  const config = configs.find((c) => c.id === activeConfigId);
+  if (!config) {
+    showNotification("Error: No active config to export");
+    return;
+  }
+
+  const exportData = {
+    name: config.name,
+    config: config.config,
+    exportedAt: new Date().toISOString(),
+    version: "1.0"
+  };
+
+  const jsonString = JSON.stringify(exportData, null, 2);
+  const blob = new Blob([jsonString], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `graphite-config-${config.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}-${new Date().toISOString().split('T')[0]}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  showNotification(`Config "${config.name}" exported successfully`);
+}
+
+async function importConfigFromFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  // Reset the input so the same file can be imported again if needed
+  event.target.value = '';
+
+  try {
+    const text = await file.text();
+    const importData = JSON.parse(text);
+
+    // Validate the imported data
+    if (!importData.config || !importData.name) {
+      showNotification("Error: Invalid config file format");
+      return;
+    }
+
+    // Create a new config with the imported data
+    const response = await fetch("/api/accounts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: importData.name + " (imported)",
+        config: importData.config
+      }),
+    });
+    const data = await response.json();
+
+    if (data.success) {
+      await loadConfigs();
+      renderConfigsList();
+      showNotification(`Config "${importData.name}" imported successfully`);
+    } else {
+      showNotification(`Error: ${data.message}`);
+    }
+  } catch (error) {
+    console.error("Failed to import config:", error);
+    showNotification("Error: Failed to import config file");
+  }
+}

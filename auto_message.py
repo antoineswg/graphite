@@ -604,10 +604,19 @@ def create_account():
     session_data = get_session_data()
     data = request.json
 
+    # If config is provided (from import), use it; otherwise use default
+    config = data.get("config", get_default_config())
+    
+    # Ensure all required fields exist in imported config
+    default_config = get_default_config()
+    for key in default_config:
+        if key not in config:
+            config[key] = default_config[key]
+
     new_account = {
         "id": str(uuid.uuid4()),
         "name": data.get("name", f"Account {len(session_data['accounts']) + 1}"),
-        "config": get_default_config(),
+        "config": config,
     }
 
     session_data["accounts"].append(new_account)
