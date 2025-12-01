@@ -126,3 +126,8 @@
     outline: none;
     border-color: var(--white);
 }
+
+.add-config-btn {
+    margin-top: 20px;
+    width: 100%;
+}

@@ -22,8 +22,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/console.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/configs.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stats.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/toast.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 
 <body>
@@ -69,8 +71,8 @@
         </div>
 
         <div class="form-group">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                <label for="token" style="margin: 0;">Discord Token</label>
+            <div class="label-with-help">
+                <label for="token">Discord Token</label>
                 <button class="btn-help" onclick="showTokenHelp()" type="button">?</button>
             </div>
             <input type="text" id="token" placeholder="YOUR_TOKEN_HERE">
@@ -78,8 +80,8 @@
         </div>
 
         <div class="form-group">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                <label for="channelId" style="margin: 0;">Channel ID</label>
+            <div class="label-with-help">
+                <label for="channelId">Channel ID</label>
                 <button class="btn-help" onclick="showChannelHelp()" type="button">?</button>
             </div>
             <input type="text" id="channelId" placeholder="123456789012345678">
@@ -90,9 +92,8 @@
             <label>Message Pool</label>
             <div class="times-container" id="messagesContainer">
             </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <textarea id="newMessage" placeholder="Enter message content..." rows="3"
-                    style="resize: vertical;"></textarea>
+            <div class="message-input-container">
+                <textarea id="newMessage" placeholder="Enter message content..." rows="3"></textarea>
                 <button class="btn btn-secondary" onclick="addMessage()">+ Add to pool</button>
             </div>
             <p class="info-text">Multiple messages available // Random selection on send</p>
@@ -152,7 +153,7 @@
 
             <div class="mode-config active" id="config-spam">
                 <label for="spamInterval">Message Interval</label>
-                <input type="number" id="spamInterval" placeholder="60" value="60" min="1">
+                <input type="number" id="spamInterval" placeholder="1" value="1" min="1">
                 <p class="info-text">Seconds between consecutive messages</p>
             </div>
 
@@ -164,11 +165,11 @@
                         <p class="info-text">Window start</p>
                     </div>
                     <div>
-                        <input type="time" id="windowEnd" value="17:00">
+                        <input type="time" id="windowEnd" value="09:05">
                         <p class="info-text">Window end</p>
                     </div>
                 </div>
-                <label for="messagesCount" style="margin-top: 15px;">Message Count</label>
+                <label for="messagesCount" class="spacing-top">Message Count</label>
                 <input type="number" id="messagesCount" placeholder="10" value="10" min="1">
                 <p class="info-text">Total messages distributed randomly within time window</p>
             </div>
@@ -191,14 +192,23 @@
             <div class="log-entry">Graphite is ready to run. </div>
         </div>
 
-        <div class="button-group" style="margin-top: 15px;">
-            <button id="copyLogsBtn" class="btn btn-secondary" onclick="copyLogsToClipboard()" style="flex: 1;"
-                disabled>
+        <div class="button-group log-buttons">
+            <button id="copyLogsBtn" class="btn btn-secondary" onclick="copyLogsToClipboard()" disabled>
                 Copy Logs
             </button>
-            <button id="exportLogsBtn" class="btn btn-secondary" onclick="exportLogsToFile()" style="flex: 1;" disabled>
+            <button id="exportLogsBtn" class="btn btn-secondary" onclick="exportLogsToFile()" disabled>
                 Export Logs
             </button>
+        </div>
+
+        <div id="statsPanel">
+            <div class="form-group">
+                <label>Session Statistics</label>
+                <div class="stats-chart-container">
+                    <canvas id="messageStatsChart"></canvas>
+                </div>
+                <p class="info-text">Distribution of sent messages</p>
+            </div>
         </div>
 
         <div class="github-link">
@@ -438,12 +448,13 @@
                 <span class="modal-kbd-hint">Press <kbd>ESC</kbd> to close</span>
             </div>
             <div id="configsList"></div>
-            <button class="btn btn-secondary" onclick="addNewConfig()" style="margin-top: 20px; width: 100%;">+ Add New
+            <div id="configsList"></div>
+            <button class="btn btn-secondary add-config-btn" onclick="addNewConfig()">+ Add New
                 Config</button>
         </div>
     </div>
-
     <script src="{{ url_for('static', filename='js/state.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/stats.js') }}"></script>
     <script src="{{ url_for('static', filename='js/toast.js') }}"></script>
     <script src="{{ url_for('static', filename='js/configs.js') }}"></script>
     <script src="{{ url_for('static', filename='js/api.js') }}"></script>

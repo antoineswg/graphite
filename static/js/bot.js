@@ -7,6 +7,10 @@ async function startBot() {
 
     if (result.success) {
       updateStatus(true);
+      // Hide stats when starting
+      hideStatsPanel();
+      // Reset stats for new session
+      await resetMessageStats();
     } else {
       console.error("Error:", result.message);
     }
@@ -21,6 +25,11 @@ async function stopBot() {
     const result = await response.json();
 
     updateStatus(false);
+
+    // Load message stats when bot stops
+    setTimeout(() => {
+      loadMessageStats();
+    }, 500);
   } catch (error) {
     console.error("Failed to stop bot:", error);
   }

@@ -11,6 +11,13 @@ function toggleTheme() {
 
   root.setAttribute("data-theme", newTheme);
   localStorage.setItem("theme", newTheme);
+
+  // Update chart theme if it exists
+  setTimeout(() => {
+    if (typeof updateChartTheme === "function") {
+      updateChartTheme();
+    }
+  }, 100);
 }
 
 // Initialize on DOM load

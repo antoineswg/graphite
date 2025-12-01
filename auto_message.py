@@ -24,9 +24,9 @@ def get_default_config():
         "min_delay": 0,
         "max_delay": 0,
         "send_times": [],
-        "spam_interval": 60,
+        "spam_interval": 1,
         "window_start": "09:00",
-        "window_end": "17:00",
+        "window_end": "09:05",
         "messages_count": 10,
         "dry_run": False,
     }
@@ -53,6 +53,7 @@ def get_session_data():
             "stop_bot": False,
             "bot_thread": None,
             "console_logs": [],
+            "message_stats": {},
         }
         sessions_data[session_id]["active_account_id"] = sessions_data[session_id][
             "accounts"
@@ -105,6 +106,12 @@ def trigger_typing(token, channel_id):
 
 def send_message(token, channel_id, message, session_id, dry_run=False):
     """Send a message to a Discord channel"""
+    if session_id in sessions_data:
+        message_stats = sessions_data[session_id]["message_stats"]
+        if message not in message_stats:
+            message_stats[message] = 0
+        message_stats[message] += 1
+
     if dry_run:
         log(f"[DRY RUN] Would send message: {message}", session_id)
         return True
@@ -562,6 +569,21 @@ def get_logs():
     """Get console logs"""
     session_data = get_session_data()
     return jsonify({"logs": session_data["console_logs"]})
+
+
+@app.route("/api/message-stats", methods=["GET"])
+def get_message_stats():
+    """Get message statistics"""
+    session_data = get_session_data()
+    return jsonify({"stats": session_data["message_stats"]})
+
+
+@app.route("/api/message-stats", methods=["DELETE"])
+def reset_message_stats():
+    """Reset message statistics"""
+    session_data = get_session_data()
+    session_data["message_stats"] = {}
+    return jsonify({"success": True})
 
 
 @app.route("/api/accounts", methods=["GET"])

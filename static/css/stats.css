@@ -1,0 +1,38 @@
+.stats-chart-container {
+    position: relative;
+    min-height: 300px;
+    max-height: 500px;
+    padding: 20px;
+    border: 2px solid var(--border-primary);
+    background: var(--bg-secondary);
+    margin-top: 10px;
+}
+
+.stats-chart-container canvas {
+    width: 100% !important;
+    height: auto !important;
+}
+
+#statsPanel {
+    display: none;
+    margin-top: 30px;
+}
+
+#statsPanel .info-text {
+    margin-top: 10px;
+}
+
+.log-buttons {
+    margin-top: 15px;
+}
+
+.log-buttons button {
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .stats-chart-container {
+        min-height: 250px;
+        padding: 15px;
+    }
+}
