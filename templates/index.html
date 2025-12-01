@@ -450,10 +450,13 @@
             <div id="configsList"></div>
             <div class="button-group" style="margin-top: 20px; gap: 10px;">
                 <button class="btn btn-secondary" onclick="addNewConfig()" style="flex: 1;">+ Add New Config</button>
-                <button class="btn btn-secondary" onclick="exportConfigAsJSON()" style="flex: 1;">Export as JSON</button>
-                <button class="btn btn-secondary" onclick="document.getElementById('importConfigInput').click()" style="flex: 1;">Import from File</button>
+                <button class="btn btn-secondary" onclick="exportConfigAsJSON()" style="flex: 1;">Export as
+                    JSON</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('importConfigInput').click()"
+                    style="flex: 1;">Import from File</button>
             </div>
-            <input type="file" id="importConfigInput" accept=".json" style="display: none;" onchange="importConfigFromFile(event)">
+            <input type="file" id="importConfigInput" accept=".json" style="display: none;"
+                onchange="importConfigFromFile(event)">
         </div>
     </div>
     <script src="{{ url_for('static', filename='js/state.js') }}"></script>

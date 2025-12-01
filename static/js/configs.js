@@ -299,16 +299,18 @@ function exportConfigAsJSON() {
     name: config.name,
     config: config.config,
     exportedAt: new Date().toISOString(),
-    version: "1.0"
+    version: "1.0",
   };
 
   const jsonString = JSON.stringify(exportData, null, 2);
   const blob = new Blob([jsonString], { type: "application/json" });
   const url = URL.createObjectURL(blob);
-  
+
   const a = document.createElement("a");
   a.href = url;
-  a.download = `graphite-config-${config.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}-${new Date().toISOString().split('T')[0]}.json`;
+  a.download = `graphite-config-${config.name
+    .replace(/[^a-z0-9]/gi, "_")
+    .toLowerCase()}-${new Date().toISOString().split("T")[0]}.json`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -322,7 +324,7 @@ async function importConfigFromFile(event) {
   if (!file) return;
 
   // Reset the input so the same file can be imported again if needed
-  event.target.value = '';
+  event.target.value = "";
 
   try {
     const text = await file.text();
@@ -340,7 +342,7 @@ async function importConfigFromFile(event) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: importData.name + " (imported)",
-        config: importData.config
+        config: importData.config,
       }),
     });
     const data = await response.json();

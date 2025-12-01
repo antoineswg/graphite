@@ -606,7 +606,7 @@ def create_account():
 
     # If config is provided (from import), use it; otherwise use default
     config = data.get("config", get_default_config())
-    
+
     # Ensure all required fields exist in imported config
     default_config = get_default_config()
     for key in default_config:
