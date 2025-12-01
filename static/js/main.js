@@ -115,6 +115,12 @@ document.addEventListener("keydown", function (event) {
     return;
   }
 
+  if (event.key === "Enter" && isMessageTextarea && !event.shiftKey) {
+    event.preventDefault();
+    addMessage();
+    return;
+  }
+
   if ((event.ctrlKey || event.metaKey) && event.key === "k") {
     event.preventDefault();
     document.getElementById("token").focus();
@@ -133,15 +139,7 @@ document.addEventListener("keydown", function (event) {
     return;
   }
 
-  if (
-    (event.ctrlKey || event.metaKey) &&
-    event.key === "Enter" &&
-    isMessageTextarea
-  ) {
-    event.preventDefault();
-    addMessage();
-    return;
-  }
+
 
   if ((event.ctrlKey || event.metaKey) && event.key === "d") {
     event.preventDefault();
