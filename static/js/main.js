@@ -1,5 +1,23 @@
+// Theme management
+function initTheme() {
+  const savedTheme = localStorage.getItem("theme") || "dark";
+  document.documentElement.setAttribute("data-theme", savedTheme);
+}
+
+function toggleTheme() {
+  const root = document.documentElement;
+  const currentTheme = root.getAttribute("data-theme") || "dark";
+  const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+  root.setAttribute("data-theme", newTheme);
+  localStorage.setItem("theme", newTheme);
+}
+
 // Initialize on DOM load
 document.addEventListener("DOMContentLoaded", function () {
+  // Initialize theme
+  initTheme();
+
   // Set up delay checkbox listener
   document
     .getElementById("delayEnabled")
@@ -168,6 +186,12 @@ document.addEventListener("keydown", function (event) {
       event.preventDefault();
       const dryRunCheckbox = document.getElementById("dryRun");
       dryRunCheckbox.checked = !dryRunCheckbox.checked;
+      return;
+    }
+
+    if (event.key.toLowerCase() === "t") {
+      event.preventDefault();
+      toggleTheme();
       return;
     }
 

@@ -27,7 +27,10 @@
     <div class="container">
         <div class="header-meta">
             made by <a href="https://a.ntoine.fr" target="_blank">antoine!</a> <br>
-            <span id="timestamp"></span>
+            <span id="timestamp"></span> <br>
+            <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <span class="theme-icon">◐</span>
+            </button>
         </div>
         <h1>GRAPHITE</h1>
         <p class="subtitle">Discord Message Automation</p>
@@ -153,10 +156,10 @@
 
         <div class="button-group">
             <button class="btn btn-success" id="startBtn" onclick="startBot()">
-                Start <span class="kbd-hint">SPACE</span>
+                Start
             </button>
             <button class="btn btn-danger" id="stopBtn" onclick="stopBot()" disabled>
-                Stop <span class="kbd-hint">SPACE</span>
+                Stop
             </button>
         </div>
 
@@ -289,6 +292,10 @@
                     <div class="shortcut-row">
                         <kbd>H</kbd>
                         <span>Show shortcuts</span>
+                    </div>
+                    <div class="shortcut-row">
+                        <kbd>T</kbd>
+                        <span>Toggle theme</span>
                     </div>
                     <div class="shortcut-row">
                         <kbd>ESC</kbd>
