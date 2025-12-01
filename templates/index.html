@@ -190,6 +190,15 @@
             <div class="log-entry">Graphite is ready to run. </div>
         </div>
 
+        <div class="button-group" style="margin-top: 15px;">
+            <button id="copyLogsBtn" class="btn btn-secondary" onclick="copyLogsToClipboard()" style="flex: 1;" disabled>
+                Copy Logs
+            </button>
+            <button id="exportLogsBtn" class="btn btn-secondary" onclick="exportLogsToFile()" style="flex: 1;" disabled>
+                Export Logs
+            </button>
+        </div>
+
         <div class="github-link">
             <a href="https://github.com/antoineswg/graphite" target="_blank">View on GitHub, feel free to tinker with
                 it</a>
@@ -400,6 +409,14 @@
                     <div class="shortcut-row">
                         <kbd>↓</kbd>
                         <span>Scroll down</span>
+                    </div>
+                    <div class="shortcut-row">
+                        <kbd>Ctrl+E</kbd>
+                        <span>Export logs to file</span>
+                    </div>
+                    <div class="shortcut-row">
+                        <kbd>Ctrl+Shift+C</kbd>
+                        <span>Copy logs to clipboard</span>
                     </div>
                 </div>
             </div>

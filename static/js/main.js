@@ -32,6 +32,9 @@ document.addEventListener("DOMContentLoaded", function () {
     loadConfig();
   });
 
+  // Load saved logs from localStorage
+  loadLogsFromStorage();
+
   // Set up auto-save listeners
   setupAutoSave();
 });
@@ -83,6 +86,9 @@ function closeShortcutsHelp() {
 function clearConsole() {
   const consoleWindow = document.getElementById("consoleWindow");
   consoleWindow.innerHTML = '<div class="log-entry">Console cleared.</div>';
+  localStorage.removeItem('graphite_logs');
+  localStorage.removeItem('graphite_logs_timestamp');
+  updateLogButtonsState();
 }
 
 const modes = ["spam", "scheduled", "random_window"];
@@ -139,8 +145,6 @@ document.addEventListener("keydown", function (event) {
     return;
   }
 
-
-
   if ((event.ctrlKey || event.metaKey) && event.key === "d") {
     event.preventDefault();
     const dryRunCheckbox = document.getElementById("dryRun");
@@ -151,6 +155,18 @@ document.addEventListener("keydown", function (event) {
   if ((event.ctrlKey || event.metaKey) && event.key === "r") {
     event.preventDefault();
     clearConsole();
+    return;
+  }
+
+  if ((event.ctrlKey || event.metaKey) && event.key === "e") {
+    event.preventDefault();
+    exportLogsToFile();
+    return;
+  }
+
+  if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === "C") {
+    event.preventDefault();
+    copyLogsToClipboard();
     return;
   }
 
