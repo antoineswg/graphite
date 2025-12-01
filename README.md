@@ -64,7 +64,6 @@ graphite/
   - `T` - Toggle theme
   - `1/2/3` - Switch operation modes
   - `CTRL+K/L/M` - Focus input fields
-  - `CTRL+Enter` - Add message
   - `ESC` - Close modals
 - **Mobile Responsive**: Works seamlessly on desktop and mobile devices
 - **Modern Design**: Monochrome terminal aesthetic with JetBrains Mono font
@@ -116,37 +115,6 @@ graphite/
 
 Already set up! Just run `python auto_message.py`
 
-### 24/7 Hosting Options
-
-**Free Options:**
-
-- **Render.com** - 750 hours/month free (sleeps after 15min inactivity)
-- **Railway.app** - 500 hours/month free
-- **Oracle Cloud** - Always Free tier (2 VMs forever)
-- **Google Cloud** - Free tier for small VMs
-
-**Note:** Most web hosting services (like Hostinger) don't support long-running Python processes. You need a VPS or cloud platform that allows persistent Python applications.
-
-### Render.com Deployment
-
-1. Push your code to GitHub
-2. Create account on [render.com](https://render.com)
-3. Create new "Web Service" and connect your repo
-4. Render auto-detects Flask and deploys automatically
-
-**Optional:** Add `render.yaml` to your repo:
-
-```yaml
-services:
-  - type: web
-    name: graphite
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: python auto_message.py
-```
-
 ## Important Notes
 
-⚠️ **WARNING**: This tool uses selfbot functionality which violates Discord's Terms of Service. Account termination is possible. Use at your own risk.
-
-⚠️ **Disclaimer**: This project is for educational purposes. The developer is not responsible for any consequences resulting from the use of this tool.
+**WARNING**: This tool uses selfbot functionality which violates Discord's Terms of Service. Account termination is possible. Use at your own risk.
