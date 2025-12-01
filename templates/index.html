@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Graphite - Discord Automation</title>
+    <title>Graphite</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/logo/logo-ico.svg') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -28,13 +29,21 @@
     <div class="container">
         <div class="header-meta">
             made by <a href="https://a.ntoine.fr" target="_blank">antoine!</a> <br>
-            <span id="timestamp"></span> <br>
+            <span id="timestamp"></span>
+        </div>
+        <div class="header-title">
+            <img src="{{ url_for('static', filename='images/logo/logo-dark.svg') }}" alt="Graphite Logo"
+                class="logo logo-dark">
+            <img src="{{ url_for('static', filename='images/logo/logo-light.svg') }}" alt="Graphite Logo"
+                class="logo logo-light">
+            <div>
+                <h1>GRAPHITE</h1>
+                <p class="subtitle">Discord Message Automation</p>
+            </div>
             <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">
                 <span class="theme-icon">◐</span>
             </button>
         </div>
-        <h1>GRAPHITE</h1>
-        <p class="subtitle">Discord Message Automation</p>
 
         <div class="warning">
             <strong>// NOTICE:</strong> This tool uses selfbot functionality which violates Discord's Terms of Service.
@@ -179,6 +188,11 @@
 
         <div class="console-window" id="consoleWindow">
             <div class="log-entry">Graphite is ready to run. </div>
+        </div>
+
+        <div class="github-link">
+            <a href="https://github.com/antoineswg/graphite" target="_blank">View on GitHub, feel free to tinker with
+                it</a>
         </div>
     </div>
 

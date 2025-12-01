@@ -35,7 +35,9 @@ graphite/
 ## Features
 
 ### Core Functionality
+
 - **Three Operational Modes:**
+
   - **Spam Mode**: Send messages at regular intervals
   - **Scheduled Mode**: Send messages at specific times throughout the day
   - **Random Window Mode**: Send a specified number of messages randomly within a time window
@@ -46,6 +48,7 @@ graphite/
 - **Real-Time Console**: Monitor bot activity in real-time through the web interface
 
 ### Configuration Management
+
 - **Multi-Config Support**: Create and manage multiple Discord configurations
 - **Quick Switching**: Easily switch between different configs
 - **Auto-Save**: Configurations automatically save as you make changes
@@ -53,6 +56,7 @@ graphite/
 - **Config Isolation**: Each config maintains its own token, messages, and settings
 
 ### User Interface
+
 - **Dark/Light Theme**: Toggle between themes with persistent storage
 - **Keyboard Shortcuts**: Comprehensive shortcuts for all actions
   - `SPACE` - Start/Stop bot
@@ -85,6 +89,7 @@ graphite/
 2. Open your browser and go to `http://localhost:5000`
 
 3. Configure your first config:
+
    - Enter your Discord token and channel ID
    - Add one or more messages to the message pool
    - Select an operation mode (Spam/Scheduled/Random Window)
@@ -93,6 +98,7 @@ graphite/
    - (Optional) Enable dry run mode to test without sending
 
 4. Start the bot:
+
    - Click "Start" or press `SPACE`
    - Monitor activity in the real-time console
    - Stop anytime with "Stop" button or `SPACE`
@@ -107,11 +113,13 @@ graphite/
 ## Deployment
 
 ### Local Development
+
 Already set up! Just run `python auto_message.py`
 
 ### 24/7 Hosting Options
 
 **Free Options:**
+
 - **Render.com** - 750 hours/month free (sleeps after 15min inactivity)
 - **Railway.app** - 500 hours/month free
 - **Oracle Cloud** - Always Free tier (2 VMs forever)
@@ -127,6 +135,7 @@ Already set up! Just run `python auto_message.py`
 4. Render auto-detects Flask and deploys automatically
 
 **Optional:** Add `render.yaml` to your repo:
+
 ```yaml
 services:
   - type: web
