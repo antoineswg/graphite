@@ -85,9 +85,7 @@ function renderConfigsList() {
     const messageCount = config.config.messages.length;
 
     item.innerHTML = `
-            <div class="config-info" onclick="switchToConfig('${
-              config.id
-            }')">
+            <div class="config-info" onclick="switchToConfig('${config.id}')">
                 <div class="config-name" id="name-${config.id}">${escapeHtml(
       config.name
     )}</div>

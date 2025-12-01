@@ -343,7 +343,12 @@ def run_random_window_mode(config, session_data, session_id):
 def run_bot(session_id):
     """Main bot loop"""
     session_data = sessions_data[session_id]
-    config = session_data["config"]
+    active_account = get_active_account(session_data)
+    if not active_account:
+        log("Error: No active account found", session_id)
+        session_data["bot_running"] = False
+        return
+    config = active_account["config"]
 
     log("=" * 50, session_id)
     log("Auto Message Bot Started", session_id)
