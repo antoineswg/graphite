@@ -99,12 +99,19 @@ document.addEventListener("keydown", function (event) {
     document.activeElement.tagName === "INPUT" ||
     document.activeElement.tagName === "TEXTAREA";
   const isMessageTextarea = document.activeElement.id === "newMessage";
+  const isTimeInput = document.activeElement.id === "newTime";
 
   if (event.key === "Escape") {
     closeTokenHelp();
     closeChannelHelp();
     closeShortcutsHelp();
     closeConfigManager();
+    return;
+  }
+
+  if (event.key === "Enter" && isTimeInput) {
+    event.preventDefault();
+    addTime();
     return;
   }
 
